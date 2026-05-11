@@ -96,26 +96,36 @@ Uber-ride/
 
 
 
+---
 
-🎯 Future Improvements
+# 🎯 Future Improvements
 
-# Google Maps Integration
-# Live GPS Tracking
-# Online Payment Gateway
-# Ride History
-# Push Notifications
-# Dark Mode
-# Admin Dashboard
-# Docker Deployment
-# CI/CD Integration
+- ✔ Google Maps Integration
+- ✔ Live GPS Tracking
+- ✔ Online Payment Gateway
+- ✔ Ride History
+- ✔ Push Notifications
+- ✔ Dark Mode
+- ✔ Admin Dashboard
+- ✔ Docker Deployment
+- ✔ CI/CD Integration
+
+---
+
+# 👨‍💻 Author
+
+## Akhilesh Kumar Yadav
+
+- GitHub: https://github.com/Akhilesh-stack
+- LinkedIn: https://www.linkedin.com/in/akhilesh-kumar-yadav-489022299
+
+---
 
 
 
 
 
-👨‍💻 Author
-Akhilesh Kumar Yadav
 
-# GitHub: https://github.com/Akhilesh-stack
 
-# LinkedIn: https://www.linkedin.com/in/akhilesh-kumar-yadav-489022299
+
+

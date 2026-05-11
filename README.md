@@ -1,80 +1,79 @@
-##🚖 Uber Ride — Full Stack Ride Booking Platform
+# 🚖 Uber Ride — Full Stack Ride Booking Platform
 
+---
 
+## 🌟 Overview
 
+Uber Ride is a modern full-stack ride-booking application inspired by real-world ride-hailing platforms like Uber and Rapido. The project provides seamless user and captain authentication, ride booking functionality, real-time communication, location handling, and a responsive UI.
 
-🌟 Overview
+This project demonstrates the implementation of scalable backend architecture, REST APIs, authentication systems, and real-time ride flow using modern web technologies.
 
-# Uber Ride is a modern full-stack ride-booking application inspired by real-world ride-hailing platforms like Uber and Rapido. The project provides seamless user and captain authentication, ride booking functionality, real-time communication, location handling, and a responsive UI.
+---
 
-# This project demonstrates the implementation of scalable backend architecture, REST APIs, authentication systems, and real-time ride flow using modern web technologies.
+# ✨ Features
 
-✨ Features
+## 👤 User Features
 
-##👤 User Features
-✔ User Authentication & Authorization
-✔ Secure Login / Signup
-✔ Book Rides Easily
-✔ Real-Time Ride Updates
-✔ Responsive User Interface
-✔ Location-Based Ride Requests
-✔ Ride Fare Estimation
-✔ Ride Status Tracking
+- ✔ User Authentication & Authorization
+- ✔ Secure Login / Signup
+- ✔ Book Rides Easily
+- ✔ Real-Time Ride Updates
+- ✔ Responsive User Interface
+- ✔ Location-Based Ride Requests
+- ✔ Ride Fare Estimation
+- ✔ Ride Status Tracking
 
+---
 
+## 🚕 Captain Features
 
+- ✔ Captain Registration & Login
+- ✔ Accept / Reject Ride Requests
+- ✔ Live Ride Status Updates
+- ✔ Ride Completion Workflow
+- ✔ Captain Dashboard
 
-🚕 Captain Features
-# Captain Registration & Login
-# Accept / Reject Ride Requests
-# Live Ride Status Updates
-# Ride Completion Workflow
-# Captain Dashboard
+---
 
+## ⚙️ Backend Features
 
+- ✔ RESTful APIs
+- ✔ JWT Authentication
+- ✔ MongoDB Database Integration
+- ✔ Socket-Based Real-Time Communication
+- ✔ Secure Password Hashing
+- ✔ MVC Architecture
+- ✔ Error Handling Middleware
 
+---
 
+# 🛠️ Tech Stack
 
-⚙️ Backend Features
+## Frontend
 
-# RESTful APIs
-# JWT Authentication
-# MongoDB Database Integration
-# Socket-Based Real-Time Communication
-# Secure Password Hashing
-# MVC Architecture
-# Error Handling Middlewar
+- React.js
+- Tailwind CSS
+- Axios
+- React Router DOM
+- Vite
 
+---
 
+## Backend
 
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+- Socket.IO
+- bcrypt
 
-🛠️ Tech Stack
+---
 
-1. Frontend
+# 📂 Project Structure
 
--React.js
--Tailwind CSS
--Axios
--React Router DOM
--Vite
-
-
-
-
-2. Backend
-
--Node.js
--Express.js
--MongoDB
--Mongoose
--JWT Authentication
--Socket.IO
--bcrypt
-
-
-
-
-
+```bash
 Uber-ride/
 │
 ├── backend/

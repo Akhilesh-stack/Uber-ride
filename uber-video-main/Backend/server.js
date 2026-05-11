@@ -7,7 +7,10 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 const cors= require('cors');
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 
 initializeSocket(server);
 

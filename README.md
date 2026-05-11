@@ -23,12 +23,18 @@ Ride Fare Estimation
 Ride Status Tracking
 
 
+
+
 🚕 Captain Features
 Captain Registration & Login
 Accept / Reject Ride Requests
 Live Ride Status Updates
 Ride Completion Workflow
 Captain Dashboard
+
+
+
+
 
 ⚙️ Backend Features
 RESTful APIs
@@ -38,6 +44,8 @@ Socket-Based Real-Time Communication
 Secure Password Hashing
 MVC Architecture
 Error Handling Middlewar
+
+
 
 
 🛠️ Tech Stack
@@ -51,6 +59,8 @@ React Router DOM
 Vite
 
 
+
+
 2. Backend
 
 Node.js
@@ -60,6 +70,8 @@ Mongoose
 JWT Authentication
 Socket.IO
 bcrypt
+
+
 
 
 
@@ -84,6 +96,8 @@ Uber-ride/
 
 
 
+
+
 🎯 Future Improvements
 
 Google Maps Integration
@@ -95,6 +109,9 @@ Dark Mode
 Admin Dashboard
 Docker Deployment
 CI/CD Integration
+
+
+
 
 
 👨‍💻 Author

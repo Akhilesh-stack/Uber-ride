@@ -11,7 +11,6 @@
 
 ✨ Features
 
-
 👤 User Features
 # User Authentication & Authorization
 # Secure Login / Signup

@@ -1,4 +1,4 @@
-🚖 Uber Ride — Full Stack Ride Booking Platform
+##🚖 Uber Ride — Full Stack Ride Booking Platform
 
 
 
@@ -11,15 +11,15 @@
 
 ✨ Features
 
-👤 User Features
-# User Authentication & Authorization
-# Secure Login / Signup
-# Book Rides Easily
-# Real-Time Ride Updates
-# Responsive User Interface
-# Location-Based Ride Requests
-# Ride Fare Estimation
-# Ride Status Tracking
+##👤 User Features
+✔ User Authentication & Authorization
+✔ Secure Login / Signup
+✔ Book Rides Easily
+✔ Real-Time Ride Updates
+✔ Responsive User Interface
+✔ Location-Based Ride Requests
+✔ Ride Fare Estimation
+✔ Ride Status Tracking
 
 
 

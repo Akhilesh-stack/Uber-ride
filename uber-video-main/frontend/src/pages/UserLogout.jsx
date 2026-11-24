@@ -1,29 +1,21 @@
 import React, { useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import api, { session } from '../lib/api'
+import { PageLoader } from '../components/ui'
 
 export const UserLogout = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-
-        axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).catch((err) => {
-            console.log(err)
-        }).finally(() => {
-            // Log out locally even if the server call fails
-            localStorage.removeItem('token')
-            navigate('/login')
-        })
+        api.get('/users/logout')
+            .catch(() => { /* log out locally even if the server call fails */ })
+            .finally(() => {
+                session.clear()
+                navigate('/login', { replace: true })
+            })
     }, [ navigate ])
 
-    return (
-        <div>Logging out...</div>
-    )
+    return <PageLoader label='Logging out...' />
 }
 
 export default UserLogout

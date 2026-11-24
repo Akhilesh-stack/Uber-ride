@@ -1,16 +1,33 @@
-
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Logo } from '../components/ui'
+import { useRedirectIfLoggedIn } from '../components/AuthLayout'
 
 const Start = () => {
+  useRedirectIfLoggedIn()
+
   return (
-    <div>
-      <div className='bg-cover bg-center bg-[url(https://images.unsplash.com/photo-1619059558110-c45be64b73ae?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)] h-screen pt-8 flex justify-between flex-col w-full'>
-        <img className='w-16 ml-8' src="https://cdn-assets-eu.frontify.com/s3/frontify-enterprise-files-eu/eyJwYXRoIjoid2VhcmVcL2ZpbGVcLzhGbTh4cU5SZGZUVjUxYVh3bnEyLnN2ZyJ9:weare:F1cOF9Bps96cMy7r9Y2d7affBYsDeiDoIHfqZrbcxAw?width=1200&height=417" alt="" />
-        <div className='bg-white pb-8 py-4 px-4'>
-          <h2 className='text-[30px] font-semibold'>Get Started with Uber</h2>
-          <Link to='/login' className='flex items-center justify-center w-full bg-black text-white py-3 rounded-lg mt-5'>Continue</Link>
-        </div>
+    <div className='relative flex min-h-screen flex-col justify-between overflow-clip bg-black text-white'>
+      <img
+        className='absolute inset-0 h-full w-full object-cover opacity-60'
+        src='https://images.unsplash.com/photo-1619059558110-c45be64b73ae?q=80&w=1200&auto=format&fit=crop'
+        alt=''
+      />
+      <div className='absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black' />
+
+      <div className='relative px-6 pt-8'>
+        <Logo light />
+      </div>
+
+      <div className='relative px-6 pb-8'>
+        <h1 className='text-4xl font-bold leading-tight tracking-tight'>Go anywhere,<br />get there fast.</h1>
+        <p className='mt-3 text-neutral-300'>Book a car, moto or auto in seconds — or start earning as a Captain.</p>
+        <Link to='/login' className='mt-8 flex items-center justify-center gap-2 rounded-xl bg-white py-4 font-semibold text-black transition hover:bg-neutral-200'>
+          Get started <i className='ri-arrow-right-line'></i>
+        </Link>
+        <Link to='/captain-login' className='mt-3 flex items-center justify-center gap-2 rounded-xl border border-white/30 py-4 font-semibold text-white transition hover:bg-white/10'>
+          <i className='ri-steering-2-line'></i> Drive as a Captain
+        </Link>
       </div>
     </div>
   )

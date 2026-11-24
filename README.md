@@ -93,8 +93,29 @@ Uber-ride/
 │
 └── README.md
 
+---
 
+# 🚀 Run Locally
 
+**1. Backend**
+
+```bash
+cd uber-video-main/Backend
+cp .env.example .env    # then fill in MONGO_URI, JWT_SECRET, GOOGLE_MAPS_API
+npm install
+npm start               # http://localhost:3000
+```
+
+**2. Frontend** (in a second terminal)
+
+```bash
+cd uber-video-main/frontend
+cp .env.example .env    # VITE_BASE_URL=http://localhost:3000, VITE_GOOGLE_MAPS_API_KEY=...
+npm install
+npm run dev             # http://localhost:5173
+```
+
+Address suggestions, fares and nearby-captain matching need a Google Maps key with the Geocoding, Distance Matrix and Places APIs enabled. Without a frontend key the map area shows a placeholder.
 
 ---
 

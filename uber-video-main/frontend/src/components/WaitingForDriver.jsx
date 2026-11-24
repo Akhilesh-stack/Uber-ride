@@ -1,47 +1,34 @@
 import React from 'react'
+import { Avatar, RideDetails, VehicleBadge, fullName } from './ui'
+import { vehicleInfo } from '../lib/vehicles'
 
-const WaitingForDriver = (props) => {
+const WaitingForDriver = ({ ride }) => {
+  const captain = ride?.captain
+  const vehicle = captain?.vehicle
+
   return (
     <div>
-      <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
-        props.waitingForDriver(false)
-      }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
+      <h3 className='text-2xl font-bold tracking-tight'>Your Captain is on the way</h3>
+      <p className='mb-5 text-sm text-neutral-500'>Share the OTP with your Captain to start the ride.</p>
 
-      <div className='flex items-center justify-between'>
-        <img className='h-12' src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg" alt="" />
-        <div className='text-right'>
-          <h2 className='text-lg font-medium capitalize'>{props.ride?.captain.fullname.firstname}</h2>
-          <h4 className='text-xl font-semibold -mt-1 -mb-1'>{props.ride?.captain.vehicle.plate}</h4>
-          <p className='text-sm text-gray-600'>Maruti Suzuki Alto</p>
-          <h1 className='text-lg font-semibold'>  {props.ride?.otp} </h1>
+      <div className='mb-5 flex items-center justify-between rounded-2xl bg-neutral-900 p-4 text-white'>
+        <span className='text-sm text-neutral-300'>Your OTP</span>
+        <span className='font-mono text-3xl font-bold tracking-[0.3em]'>{ride?.otp || '------'}</span>
+      </div>
+
+      <div className='mb-5 flex items-center gap-3'>
+        <Avatar name={fullName(captain)} />
+        <div className='flex-1'>
+          <p className='font-semibold capitalize'>{fullName(captain) || 'Captain'}</p>
+          <p className='text-sm capitalize text-neutral-500'>{vehicle?.color} {vehicleInfo(vehicle?.vehicleType).label}</p>
+        </div>
+        <div className='flex items-center gap-2'>
+          <VehicleBadge type={vehicle?.vehicleType} className='h-11 w-11 text-2xl' />
+          <span className='rounded-lg border-2 border-black px-2 py-1 font-mono text-sm font-bold'>{vehicle?.plate}</span>
         </div>
       </div>
 
-      <div className='flex gap-2 justify-between flex-col items-center'>
-        <div className='w-full mt-5'>
-          <div className='flex items-center gap-5 p-3 border-b-2'>
-            <i className="ri-map-pin-user-fill"></i>
-            <div>
-              <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.pickup}</p>
-            </div>
-          </div>
-          <div className='flex items-center gap-5 p-3 border-b-2'>
-            <i className="text-lg ri-map-pin-2-fill"></i>
-            <div>
-              <h3 className='text-lg font-medium'>562/11-A</h3>
-              <p className='text-sm -mt-1 text-gray-600'>{props.ride?.destination}</p>
-            </div>
-          </div>
-          <div className='flex items-center gap-5 p-3'>
-            <i className="ri-currency-line"></i>
-            <div>
-              <h3 className='text-lg font-medium'>₹{props.ride?.fare} </h3>
-              <p className='text-sm -mt-1 text-gray-600'>Cash Cash</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <RideDetails pickup={ride?.pickup} destination={ride?.destination} fare={ride?.fare} />
     </div>
   )
 }

@@ -1,12 +1,36 @@
-const express= require('express');
-const cors=require('cors');
-const app=express();
-
-const dotenv=require('dotenv');
+const dotenv = require('dotenv');
 dotenv.config();
-app.use(cors());
 
-app.get('/' , (req, res)=>{
-    res.send("Hello world");
+const express = require('express');
+const cors = require('cors');
+const connectToDb = require('./db/db');
+const userRoutes = require('./routes/user.routes');
+
+const app = express();
+
+connectToDb().catch((err) => {
+    console.error('DB connection failed:', err.message);
+    process.exit(1);
 });
-module.exports =app;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+    res.send('Hello world');
+});
+
+app.use('/users', userRoutes);
+
+app.use((req, res) => {
+    res.status(404).json({ message: 'Route not found' });
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(err.status || 500).json({ message: err.message || 'Internal server error' });
+});
+
+module.exports = app;

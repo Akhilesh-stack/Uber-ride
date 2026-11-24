@@ -10,3 +10,11 @@
     @apply bg-neutral-200 font-sans text-neutral-900 antialiased;
   }
 }
+
+/* Map credit sits under the floating header buttons */
+.leaflet-top.leaflet-right {
+  margin-top: 72px;
+}
+.leaflet-control-attribution {
+  @apply rounded-l-md text-[10px];
+}

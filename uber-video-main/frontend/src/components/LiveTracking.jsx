@@ -1,52 +1,75 @@
-import React, { useState, useEffect } from 'react'
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
+import { useEffect, useState } from 'react'
+import { MapContainer, TileLayer, Marker, Circle, AttributionControl, useMap } from 'react-leaflet'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-const containerStyle = { width: '100%', height: '100%' }
+// Free OpenStreetMap-based tiles (no API key needed)
+const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+const ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
 // New Delhi, used until the browser gives us a location
-const DEFAULT_CENTER = { lat: 28.6139, lng: 77.209 }
+const DEFAULT_CENTER = [ 28.6139, 77.209 ]
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+const userIcon = L.divIcon({
+    className: '',
+    html: '<span class="block h-5 w-5 rounded-full border-[3px] border-white bg-blue-600 shadow-lg"></span>',
+    iconSize: [ 20, 20 ],
+    iconAnchor: [ 10, 10 ],
+})
 
-const MapPlaceholder = ({ text }) => (
-    <div className='flex h-full w-full flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,#f5f5f5_25%,#ececec_25%,#ececec_50%,#f5f5f5_50%,#f5f5f5_75%,#ececec_75%)] bg-[length:40px_40px] text-neutral-500'>
-        <i className='ri-map-2-line text-4xl'></i>
-        <p className='px-6 text-center text-sm'>{text}</p>
-    </div>
-)
+// Keep the map centred on the latest position
+const Recenter = ({ position }) => {
+    const map = useMap()
+    useEffect(() => {
+        map.setView(position, map.getZoom(), { animate: true })
+    }, [ map, position ])
+    return null
+}
 
-const Map = () => {
+const LiveTracking = () => {
     const [ position, setPosition ] = useState(DEFAULT_CENTER)
-    const { isLoaded, loadError } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: API_KEY })
+    const [ accuracy, setAccuracy ] = useState(null)
+    const [ located, setLocated ] = useState(false)
 
     useEffect(() => {
         if (!navigator.geolocation) return
         const watchId = navigator.geolocation.watchPosition(
-            ({ coords }) => setPosition({ lat: coords.latitude, lng: coords.longitude }),
+            ({ coords }) => {
+                setPosition([ coords.latitude, coords.longitude ])
+                setAccuracy(coords.accuracy)
+                setLocated(true)
+            },
             () => { /* permission denied: keep default center */ },
-            { enableHighAccuracy: true }
+            { enableHighAccuracy: true, maximumAge: 10000 }
         )
         return () => navigator.geolocation.clearWatch(watchId)
     }, [])
 
-    if (loadError) return <MapPlaceholder text='Map could not be loaded.' />
-    if (!isLoaded) return <MapPlaceholder text='Loading map...' />
-
     return (
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={position}
-            zoom={15}
-            options={{ disableDefaultUI: true, zoomControl: true }}
-        >
-            <Marker position={position} />
-        </GoogleMap>
+        // `isolate` keeps Leaflet's high z-index panes below the app's overlays
+        <div className='isolate h-full w-full'>
+            <MapContainer
+                center={position}
+                zoom={15}
+                zoomControl={false}
+                attributionControl={false}
+                className='h-full w-full'
+            >
+                {/* Bottom of the map is covered by panels, so show the required credit at the top */}
+                <AttributionControl position='topright' prefix={false} />
+                <TileLayer url={TILE_URL} attribution={ATTRIBUTION} maxZoom={19} />
+                {located && (
+                    <>
+                        {accuracy && accuracy < 500 && (
+                            <Circle center={position} radius={accuracy} pathOptions={{ color: '#2563eb', weight: 1, fillOpacity: 0.1 }} />
+                        )}
+                        <Marker position={position} icon={userIcon} />
+                    </>
+                )}
+                <Recenter position={position} />
+            </MapContainer>
+        </div>
     )
-}
-
-const LiveTracking = () => {
-    if (!API_KEY) return <MapPlaceholder text='Map is off. Set VITE_GOOGLE_MAPS_API_KEY in frontend/.env to show it.' />
-    return <Map />
 }
 
 export default LiveTracking

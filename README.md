@@ -110,12 +110,12 @@ npm start               # http://localhost:3000
 
 ```bash
 cd uber-video-main/frontend
-cp .env.example .env    # VITE_BASE_URL=http://localhost:3000, VITE_GOOGLE_MAPS_API_KEY=...
+cp .env.example .env    # VITE_BASE_URL=http://localhost:3000
 npm install
 npm run dev             # http://localhost:5173
 ```
 
-Address suggestions, fares and nearby-captain matching need a Google Maps key with the Geocoding, Distance Matrix and Places APIs enabled. Without a frontend key the map area shows a placeholder.
+Maps work without any API key: the map uses OpenStreetMap tiles (Leaflet), and the backend uses Photon for address search and OSRM for distance/time. Setting `GOOGLE_MAPS_API` in the backend switches search and fares to Google Maps instead.
 
 ---
 

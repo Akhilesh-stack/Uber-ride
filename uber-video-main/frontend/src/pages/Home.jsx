@@ -44,19 +44,26 @@ const Home = () => {
         socket.emit("join", { userType: "user", userId: user._id })
     }, [ user ])
 
-    socket.on('ride-confirmed', ride => {
+    // Register listeners once, and remove them on unmount (otherwise every render adds a duplicate)
+    useEffect(() => {
+        const onRideConfirmed = ride => {
+            setVehicleFound(false)
+            setWaitingForDriver(true)
+            setRide(ride)
+        }
+        const onRideStarted = ride => {
+            setWaitingForDriver(false)
+            navigate('/riding', { state: { ride } })
+        }
 
+        socket.on('ride-confirmed', onRideConfirmed)
+        socket.on('ride-started', onRideStarted)
 
-        setVehicleFound(false)
-        setWaitingForDriver(true)
-        setRide(ride)
-    })
-
-    socket.on('ride-started', ride => {
-        console.log("ride")
-        setWaitingForDriver(false)
-        navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
-    })
+        return () => {
+            socket.off('ride-confirmed', onRideConfirmed)
+            socket.off('ride-started', onRideStarted)
+        }
+    }, [ socket, navigate ])
 
 
     const handlePickupChange = async (e) => {

@@ -17,29 +17,38 @@ function initializeSocket(server) {
 
 
         socket.on('join', async (data) => {
-            const { userId, userType } = data;
+            try {
+                const { userId, userType } = data || {};
 
-            if (userType === 'user') {
-                await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
-            } else if (userType === 'captain') {
-                await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
+                if (userType === 'user') {
+                    await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
+                } else if (userType === 'captain') {
+                    await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
+                }
+            } catch (err) {
+                console.error('join failed:', err.message);
             }
         });
 
 
         socket.on('update-location-captain', async (data) => {
-            const { userId, location } = data;
+            const { userId, location } = data || {};
 
-            if (!location || !location.ltd || !location.lng) {
+            // typeof check so a latitude/longitude of 0 is still valid
+            if (!location || typeof location.ltd !== 'number' || typeof location.lng !== 'number') {
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
-            await captainModel.findByIdAndUpdate(userId, {
-                location: {
-                    ltd: location.ltd,
-                    lng: location.lng
-                }
-            });
+            try {
+                await captainModel.findByIdAndUpdate(userId, {
+                    location: {
+                        ltd: location.ltd,
+                        lng: location.lng
+                    }
+                });
+            } catch (err) {
+                console.error('update-location-captain failed:', err.message);
+            }
         });
 
         socket.on('disconnect', () => {
@@ -49,8 +58,6 @@ function initializeSocket(server) {
 }
 
 const sendMessageToSocketId = (socketId, messageObject) => {
-
-console.log(messageObject);
 
     if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);

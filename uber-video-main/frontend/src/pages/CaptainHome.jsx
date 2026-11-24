@@ -45,15 +45,17 @@ const CaptainHome = () => {
         const locationInterval = setInterval(updateLocation, 10000)
         updateLocation()
 
-        // return () => clearInterval(locationInterval)
+        return () => clearInterval(locationInterval)
     }, [])
 
-    socket.on('new-ride', (data) => {
-
-        setRide(data)
-        setRidePopupPanel(true)
-
-    })
+    useEffect(() => {
+        const onNewRide = (data) => {
+            setRide(data)
+            setRidePopupPanel(true)
+        }
+        socket.on('new-ride', onNewRide)
+        return () => socket.off('new-ride', onNewRide)
+    }, [ socket ])
 
     async function confirmRide() {
 

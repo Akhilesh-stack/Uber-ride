@@ -11,37 +11,36 @@ module.exports.createRide = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { userId, pickup, destination, vehicleType } = req.body;
+    const { pickup, destination, vehicleType } = req.body;
 
+    let ride;
     try {
-        const ride = await rideService.createRide({ user: req.user._id, pickup, destination, vehicleType });
-        res.status(201).json(ride);
-
-        const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
-
-
-
-        const captainsInRadius = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 2);
-
-        ride.otp = ""
-
-        const rideWithUser = await rideModel.findOne({ _id: ride._id }).populate('user');
-
-        captainsInRadius.map(captain => {
-
-            sendMessageToSocketId(captain.socketId, {
-                event: 'new-ride',
-                data: rideWithUser
-            })
-
-        })
-
+        ride = await rideService.createRide({ user: req.user._id, pickup, destination, vehicleType });
     } catch (err) {
-
         console.log(err);
         return res.status(500).json({ message: err.message });
     }
 
+    res.status(201).json(ride);
+
+    // Response is already sent; errors below must not try to send another one.
+    try {
+        const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
+        const captainsInRadius = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 2);
+
+        // otp has select:false, so it is not included here
+        const rideWithUser = await rideModel.findOne({ _id: ride._id }).populate('user');
+
+        captainsInRadius.forEach(captain => {
+            if (!captain.socketId) return;
+            sendMessageToSocketId(captain.socketId, {
+                event: 'new-ride',
+                data: rideWithUser
+            })
+        })
+    } catch (err) {
+        console.log('Failed to notify captains:', err.message);
+    }
 };
 
 module.exports.getFare = async (req, res) => {
@@ -129,5 +128,5 @@ module.exports.endRide = async (req, res) => {
         return res.status(200).json(ride);
     } catch (err) {
         return res.status(500).json({ message: err.message });
-    } s
+    }
 }

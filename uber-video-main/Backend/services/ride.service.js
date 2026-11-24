@@ -83,20 +83,22 @@ module.exports.confirmRide = async ({
         throw new Error('Ride id is required');
     }
 
-    await rideModel.findOneAndUpdate({
-        _id: rideId
+    // Only a pending ride can be accepted, so two captains can't take the same ride
+    const updated = await rideModel.findOneAndUpdate({
+        _id: rideId,
+        status: 'pending'
     }, {
         status: 'accepted',
         captain: captain._id
     })
 
+    if (!updated) {
+        throw new Error('Ride not found or already accepted');
+    }
+
     const ride = await rideModel.findOne({
         _id: rideId
     }).populate('user').populate('captain').select('+otp');
-
-    if (!ride) {
-        throw new Error('Ride not found');
-    }
 
     return ride;
 
@@ -108,7 +110,8 @@ module.exports.startRide = async ({ rideId, otp, captain }) => {
     }
 
     const ride = await rideModel.findOne({
-        _id: rideId
+        _id: rideId,
+        captain: captain._id
     }).populate('user').populate('captain').select('+otp');
 
     if (!ride) {
@@ -129,6 +132,7 @@ module.exports.startRide = async ({ rideId, otp, captain }) => {
         status: 'ongoing'
     })
 
+    ride.status = 'ongoing';
     return ride;
 }
 
@@ -156,6 +160,7 @@ module.exports.endRide = async ({ rideId, captain }) => {
         status: 'completed'
     })
 
+    ride.status = 'completed';
     return ride;
 }
 

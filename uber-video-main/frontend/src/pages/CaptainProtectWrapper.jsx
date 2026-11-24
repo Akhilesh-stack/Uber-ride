@@ -18,6 +18,7 @@ const CaptainProtectWrapper = ({
     useEffect(() => {
         if (!token) {
             navigate('/captain-login')
+            return
         }
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {

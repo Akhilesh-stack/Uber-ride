@@ -31,8 +31,17 @@ app.use('/captains', captainRoutes);
 app.use('/maps', mapsRoutes);
 app.use('/rides', rideRoutes);
 
+app.use((req, res) => {
+    res.status(404).json({ message: 'Route not found' });
+});
 
-
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+    console.error(err);
+    if (res.headersSent) return;
+    const status = err.name === 'ValidationError' ? 400 : (err.status || 500);
+    res.status(status).json({ message: err.message || 'Internal server error' });
+});
 
 module.exports = app;
 
